@@ -13,7 +13,7 @@ import {
   ChevronRight,
   Info,
 } from "lucide-react";
-import { StatusBadge } from "@/components/ui/status-badge";
+import { StatusBadge } from "@/components/atoms/status-badge";
 
 // Data mock untuk event aktif (akan diganti API)
 const mockEvent = {

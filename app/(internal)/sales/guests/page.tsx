@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Search, UserPlus, Zap, Filter } from "lucide-react";
 import Link from "next/link";
-import { GuestCard } from "@/components/ui/guest-card";
+import { GuestCard } from "@/components/molecules/guest-card";
 
 type FilterTab = "semua" | "disetujui" | "menunggu";
 
