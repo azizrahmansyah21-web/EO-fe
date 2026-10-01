@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Save, RefreshCw, Send, ChevronLeft, ToggleLeft, ToggleRight } from "lucide-react";
 
 const VARIABLES = [
@@ -198,7 +199,9 @@ export default function WATemplatePage() {
             {/* Phone mockup */}
             <div className="mx-auto w-64 bg-gray-800 rounded-2xl p-2 shadow-lg">
               <div className="bg-[#075E54] rounded-t-xl px-3 py-2 flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-emerald-400 flex items-center justify-center text-[10px] font-bold text-white">AT</div>
+                <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center p-0.5 overflow-hidden shrink-0">
+                  <Image src="/toyota-emblem.png" alt="Toyota" width={22} height={16} className="object-contain" />
+                </div>
                 <div className="flex-1">
                   <p className="text-white text-xs font-semibold">Agung Toyota ✓</p>
                   <p className="text-emerald-200 text-[9px]">Official Business Account</p>

@@ -34,8 +34,10 @@ export default function ScannerPage() {
           setTimeout(() => {
             setScanState("idle");
             setScanResult(null);
-            if (html5QrCode && html5QrCode.isPaused()) {
-              html5QrCode.resume();
+            try {
+              html5QrCode?.resume();
+            } catch {
+              // ignore if not paused
             }
           }, 3000);
         }, 1000);

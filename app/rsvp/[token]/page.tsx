@@ -4,6 +4,7 @@ import { RsvpHeader } from "@/components/organisms/rsvp-header";
 import { EventCard } from "@/components/molecules/event-card";
 import { FacilityItem } from "@/components/molecules/facility-item";
 import { InfoRow } from "@/components/atoms/info-row";
+import { ToyotaLogo } from "@/components/atoms/toyota-logo";
 
 const mockGuest = {
   name: "Hendra Wijaya, S.E.",
@@ -32,6 +33,11 @@ export default function RsvpLandingPage({ params }: { params: { token: string } 
       <RsvpHeader title="Rsvp Landing" />
 
       <main className="flex-1 max-w-md mx-auto w-full px-4 py-5 space-y-4 pb-10">
+
+        {/* Center Logo */}
+        <div className="flex justify-center pt-1">
+          <ToyotaLogo size="xs" />
+        </div>
 
         {/* SSL badge */}
         <div className="flex items-center justify-center gap-1.5 text-xs text-gray-500">

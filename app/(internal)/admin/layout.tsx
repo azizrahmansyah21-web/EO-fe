@@ -154,9 +154,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         >
           <div className="w-64 flex flex-col h-full">
             {/* Brand */}
-            <div className="px-5 pt-5 pb-4 border-b border-gray-100">
+            <div className="px-5 pt-5 pb-4 border-b border-gray-100 flex items-center gap-3">
               <ToyotaLogo size="sm" />
-              <p className="text-[10px] text-gray-400 mt-2 font-semibold uppercase tracking-widest">Command Center</p>
+              <div className="flex flex-col">
+                <span className="text-xs font-black text-toyota-red uppercase tracking-tight leading-tight">
+                  Agung Toyota
+                </span>
+                <span className="text-[11px] font-bold text-gray-900 tracking-tight leading-tight">
+                  Command Center
+                </span>
+              </div>
             </div>
 
             {/* System status */}
