@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Users, Menu, LogOut } from "lucide-react";
+import { ToyotaLogo } from "@/components/atoms/toyota-logo";
 
 const navItems = [
   { href: "/sales", label: "Beranda", icon: Home, exact: true },
@@ -43,12 +44,8 @@ export default function SalesLayout({ children }: { children: React.ReactNode })
 
         {/* Mobile brand */}
         <div className="lg:hidden flex items-center gap-2">
-          <span className="text-sm font-black text-gray-900 tracking-tight uppercase">
-            Agung Toyota
-          </span>
-          <span className="inline-flex items-center px-2 py-0.5 rounded bg-toyota-red text-white text-[10px] font-bold uppercase tracking-wider">
-            Sales
-          </span>
+          <ToyotaLogo size="xs" noTagline />
+          <span className="text-xs font-bold text-gray-500 border-l border-gray-200 pl-2 ml-1">Sales Portal</span>
         </div>
 
         {/* Desktop event chip */}
@@ -105,12 +102,8 @@ export default function SalesLayout({ children }: { children: React.ReactNode })
           <div className="w-64 flex flex-col h-full">
             {/* Brand */}
             <div className="px-5 pt-5 pb-4 border-b border-gray-100">
-              <div className="text-xs font-bold text-gray-900 tracking-widest uppercase mb-1">
-                AGUNG TOYOTA
-              </div>
-              <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-toyota-red text-white text-[9px] font-bold uppercase tracking-wider">
-                Sales Portal
-              </span>
+              <ToyotaLogo size="sm" />
+              <p className="text-[10px] text-gray-400 mt-2 font-semibold uppercase tracking-widest">Sales Portal</p>
             </div>
 
             {/* Nav */}

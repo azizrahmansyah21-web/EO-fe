@@ -2,6 +2,7 @@
 
 import { QRCodeSVG } from "qrcode.react";
 import { Badge } from "@/components/atoms/badge";
+import { ToyotaLogo } from "@/components/atoms/toyota-logo";
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 
@@ -24,16 +25,7 @@ export function TicketCard({ guestName, tokenId, pax }: TicketCardProps) {
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-        <div className="flex items-center gap-2">
-          {/* Toyota logo placeholder */}
-          <div className="w-8 h-8 bg-toyota-red rounded flex items-center justify-center shrink-0">
-            <span className="text-white text-[8px] font-black">AT</span>
-          </div>
-          <div>
-            <p className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-none">AGUNG</p>
-            <p className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-none">TOYOTA</p>
-          </div>
-        </div>
+        <ToyotaLogo size="xs" />
         <Badge label="● VERIFIED GUEST PASS" variant="red" />
       </div>
 

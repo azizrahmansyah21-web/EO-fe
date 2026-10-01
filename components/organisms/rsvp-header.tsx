@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { ToyotaLogo } from "@/components/atoms/toyota-logo";
 
 interface RsvpHeaderProps {
   title: string;
@@ -24,15 +25,7 @@ export function RsvpHeader({ title, backHref }: RsvpHeaderProps) {
       )}
 
       {/* Logo */}
-      <div className="flex items-center gap-1.5">
-        <div className="w-7 h-7 bg-toyota-red rounded flex items-center justify-center shrink-0">
-          <span className="text-white text-[8px] font-black leading-none">AT</span>
-        </div>
-        <div className="hidden sm:block">
-          <p className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-none">AGUNG</p>
-          <p className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-none">TOYOTA</p>
-        </div>
-      </div>
+      <ToyotaLogo size="xs" className="shrink-0" />
 
       <h1 className="flex-1 text-center text-sm font-bold text-gray-900">{title}</h1>
 

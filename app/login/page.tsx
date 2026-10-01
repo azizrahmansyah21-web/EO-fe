@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Shield, Lock, ChevronRight, ExternalLink } from "lucide-react";
+import { ToyotaLogo } from "@/components/atoms/toyota-logo";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,13 +32,7 @@ export default function LoginPage() {
           <div className="px-8 pt-8 pb-7">
             {/* Logo area */}
             <div className="flex items-center justify-center mb-6">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-toyota-red rounded flex items-center justify-center text-white text-[10px] font-black">AT</div>
-                <div>
-                  <p className="text-xs font-black text-gray-900 leading-none">TOYOTA</p>
-                  <p className="text-[8px] text-gray-400 uppercase tracking-widest">LET&apos;S GO BEYOND</p>
-                </div>
-              </div>
+              <ToyotaLogo size="md" />
             </div>
 
             {/* Badge */}

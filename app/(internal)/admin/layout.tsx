@@ -17,6 +17,7 @@ import {
   LogOut,
   User,
 } from "lucide-react";
+import { ToyotaLogo } from "@/components/atoms/toyota-logo";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -59,12 +60,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Mobile brand */}
         <div className="lg:hidden flex items-center gap-2">
-          <div className="w-6 h-6 bg-toyota-red rounded flex items-center justify-center text-white text-[8px] font-black shrink-0">
-            AT
-          </div>
-          <span className="text-sm font-black text-gray-900 uppercase tracking-tight">
-            Command Center
-          </span>
+          <ToyotaLogo size="xs" noTagline />
+          <span className="text-xs font-bold text-gray-500 border-l border-gray-200 pl-2 ml-1">Command Center</span>
         </div>
 
         {/* Desktop event chip */}
@@ -158,10 +155,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="w-64 flex flex-col h-full">
             {/* Brand */}
             <div className="px-5 pt-5 pb-4 border-b border-gray-100">
-              <div className="text-xs font-bold text-toyota-red tracking-widest uppercase mb-0.5">
-                AGUNG TOYOTA
-              </div>
-              <div className="text-xs text-gray-500">Command Center</div>
+              <ToyotaLogo size="sm" />
+              <p className="text-[10px] text-gray-400 mt-2 font-semibold uppercase tracking-widest">Command Center</p>
             </div>
 
             {/* System status */}
