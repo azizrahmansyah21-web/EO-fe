@@ -1,5 +1,5 @@
 import { Phone, MessageSquare, MoreVertical } from "lucide-react";
-import { StatusBadge } from "./status-badge";
+import { StatusBadge } from "@/components/atoms/status-badge";
 
 /**
  * GuestCard: Card molecule for displaying a single guest/prospek entry.
