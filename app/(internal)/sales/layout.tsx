@@ -3,11 +3,17 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Users, Menu, LogOut } from "lucide-react";
+import { Home, Users, Menu, LogOut, QrCode } from "lucide-react";
 import { ToyotaLogo } from "@/components/atoms/toyota-logo";
 
 const navItems = [
   { href: "/sales", label: "Beranda", icon: Home, exact: true },
+  { href: "/sales/guests", label: "Daftar Tamu", icon: Users, exact: false },
+];
+
+const mobileNavItems = [
+  { href: "/sales", label: "Beranda", icon: Home, exact: true },
+  { href: "/scanner", label: "Scanner", icon: QrCode, exact: false, isScanner: true },
   { href: "/sales/guests", label: "Daftar Tamu", icon: Users, exact: false },
 ];
 
@@ -55,6 +61,16 @@ export default function SalesLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="flex-1" />
+
+        {/* Quick Scanner Shortcut */}
+        <Link
+          href="/scanner"
+          className="flex items-center gap-1.5 px-3 h-8 bg-toyota-red text-white hover:bg-toyota-dark rounded-lg text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0"
+          title="Buka Scanner QR / Tiket"
+        >
+          <QrCode className="w-3.5 h-3.5" />
+          <span className="hidden xs:inline">Scanner</span>
+        </Link>
 
         {/* Profile dropdown */}
         <div className="relative shrink-0" ref={profileRef}>
@@ -152,9 +168,27 @@ export default function SalesLayout({ children }: { children: React.ReactNode })
 
       {/* Mobile bottom nav */}
       <nav className="lg:hidden shrink-0 bg-white border-t border-gray-200 z-30">
-        <div className="flex items-center justify-around h-16">
-          {navItems.map(({ href, label, icon: Icon, exact }) => {
+        <div className="flex items-center justify-around h-16 px-4">
+          {mobileNavItems.map(({ href, label, icon: Icon, exact, isScanner }) => {
             const isActive = exact ? pathname === href : pathname.startsWith(href);
+
+            if (isScanner) {
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-colors -mt-2 group"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-toyota-red text-white flex items-center justify-center shadow-md group-active:scale-95 transition-transform">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <span className="text-[10px] font-bold text-toyota-red">
+                    {label}
+                  </span>
+                </Link>
+              );
+            }
+
             return (
               <Link
                 key={href}

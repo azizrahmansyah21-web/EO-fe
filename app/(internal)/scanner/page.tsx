@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ScannerHeader } from "@/components/organisms/scanner-header";
 import { DesktopTerminalView } from "@/components/organisms/desktop-terminal-view";
 import { MobileScannerView } from "@/components/organisms/mobile-scanner-view";
+import { ScannerTemplate } from "@/components/templates/scanner-template";
 import { GuestVerificationData } from "@/components/molecules/guest-verification-card";
 import { ScanFeedItem } from "@/components/molecules/recent-scan-item";
 import { soundController } from "@/components/atoms/audio-chime";
@@ -352,19 +353,19 @@ export default function MasterScannerPage() {
   }[currentPos];
 
   return (
-    <div className="min-h-dvh flex flex-col bg-gray-50">
-      {/* Top Universal Header */}
-      <ScannerHeader
-        currentPos={currentPos}
-        onPosChange={handlePosChange}
-        isDesktopView={isDesktopView}
-        onToggleViewMode={() => setIsDesktopView(!isDesktopView)}
-        isTorchOn={isTorchOn}
-        onToggleTorch={() => setIsTorchOn(!isTorchOn)}
-      />
-
-      {/* Main Viewport Content: Desktop Terminal vs Mobile Scanner */}
-      {isDesktopView ? (
+    <ScannerTemplate
+      isDesktopView={isDesktopView}
+      header={
+        <ScannerHeader
+          currentPos={currentPos}
+          onPosChange={handlePosChange}
+          isDesktopView={isDesktopView}
+          onToggleViewMode={() => setIsDesktopView(!isDesktopView)}
+          isTorchOn={isTorchOn}
+          onToggleTorch={() => setIsTorchOn(!isTorchOn)}
+        />
+      }
+      desktopView={
         <DesktopTerminalView
           currentPos={currentPos}
           inputToken={inputToken}
@@ -376,7 +377,8 @@ export default function MasterScannerPage() {
           quotaStats={quotaStats}
           feedItems={currentFeed}
         />
-      ) : (
+      }
+      mobileView={
         <MobileScannerView
           currentPos={currentPos}
           onPosChange={handlePosChange}
@@ -391,7 +393,7 @@ export default function MasterScannerPage() {
           }}
           isTorchOn={isTorchOn}
         />
-      )}
-    </div>
+      }
+    />
   );
 }

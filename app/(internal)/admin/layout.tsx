@@ -27,6 +27,14 @@ const navItems = [
   { href: "/admin/users", label: "Pengguna", icon: UserCog },
 ];
 
+const mobileNavItems = [
+  { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/events", label: "Events", icon: Calendar },
+  { href: "/scanner", label: "Scanner", icon: QrCode, isScanner: true },
+  { href: "/admin/guests", label: "Undangan", icon: Users },
+  { href: "/admin/logistics", label: "Logistik", icon: Package },
+];
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -71,6 +79,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="flex-1" />
+
+        {/* Quick Scanner CTA - Highly visible on Mobile & Tablet */}
+        <Link
+          href="/scanner"
+          className="flex items-center gap-1.5 px-3 h-9 bg-toyota-red text-white hover:bg-toyota-dark rounded-lg text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0"
+          title="Buka Scanner QR / Tiket"
+        >
+          <QrCode className="w-4 h-4" />
+          <span className="hidden sm:inline">Scanner</span>
+        </Link>
 
         {/* Status pills — desktop only */}
         <div className="hidden lg:flex items-center gap-2 text-xs">
@@ -226,10 +244,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Mobile bottom nav — fixed to viewport bottom, lg+ hidden */}
       <nav className="lg:hidden shrink-0 bg-white border-t border-gray-200 z-30">
-        <div className="flex items-center justify-around h-16">
-          {navItems.map((item) => {
+        <div className="flex items-center justify-around h-16 px-1">
+          {mobileNavItems.map((item) => {
             const isActive = pathname.startsWith(item.href);
             const Icon = item.icon;
+
+            if (item.isScanner) {
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-colors -mt-2 group"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-toyota-red text-white flex items-center justify-center shadow-md group-active:scale-95 transition-transform">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <span className="text-[10px] font-bold text-toyota-red">
+                    {item.label}
+                  </span>
+                </Link>
+              );
+            }
+
             return (
               <Link
                 key={item.href}
