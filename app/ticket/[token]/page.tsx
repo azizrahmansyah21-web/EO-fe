@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import { Calendar, MapPin, Gift, Coffee, Phone, Download, Wallet, Sun } from "lucide-react";
 import { RsvpHeader } from "@/components/organisms/rsvp-header";
 import { TicketCard } from "@/components/molecules/ticket-card";
@@ -23,10 +24,11 @@ const mockGuest = {
   },
 };
 
-export default function ETicketPage({ params }: { params: { token: string } }) {
+export default function ETicketPage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = use(params);
   return (
     <div className="min-h-dvh bg-gray-50 flex flex-col">
-      <RsvpHeader title="Digital E Ticket" backHref={`/rsvp/${params.token}/confirm`} />
+      <RsvpHeader title="Digital E Ticket" backHref={`/rsvp/${token}/confirm`} />
 
       <main className="flex-1 max-w-md mx-auto w-full px-4 py-5 space-y-4 pb-10">
 

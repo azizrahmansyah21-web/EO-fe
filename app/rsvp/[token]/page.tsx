@@ -27,7 +27,8 @@ const mockGuest = {
   },
 };
 
-export default function RsvpLandingPage({ params }: { params: { token: string } }) {
+export default async function RsvpLandingPage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = await params;
   return (
     <div className="min-h-dvh bg-gray-50 flex flex-col">
       <RsvpHeader title="Rsvp Landing" />
@@ -84,7 +85,7 @@ export default function RsvpLandingPage({ params }: { params: { token: string } 
 
         {/* CTA */}
         <Link
-          href={`/rsvp/${params.token}/confirm`}
+          href={`/rsvp/${token}/confirm`}
           className="flex items-center justify-center gap-2 w-full h-12 bg-toyota-red text-white font-semibold rounded-lg shadow-sm active:scale-95 transition-all text-base"
         >
           Konfirmasi Kehadiran Sekarang

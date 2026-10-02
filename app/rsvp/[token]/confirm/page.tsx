@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar, Clock, MapPin, MonitorCheck } from "lucide-react";
 import { RsvpHeader } from "@/components/organisms/rsvp-header";
@@ -24,7 +24,8 @@ const QUOTA_OPTIONS = [
   "Saya + 2 Pendamping (3 Orang)",
 ];
 
-export default function RsvpConfirmPage({ params }: { params: { token: string } }) {
+export default function RsvpConfirmPage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = use(params);
   const router = useRouter();
   const [attendance, setAttendance] = useState<"hadir" | "tidak" | null>("hadir");
   const [quota, setQuota] = useState(QUOTA_OPTIONS[0]);
@@ -36,16 +37,16 @@ export default function RsvpConfirmPage({ params }: { params: { token: string } 
     // Simulate API call
     setTimeout(() => {
       if (attendance === "hadir") {
-        router.push(`/ticket/${params.token}`);
+        router.push(`/ticket/${token}`);
       } else {
-        router.push(`/rsvp/${params.token}`);
+        router.push(`/rsvp/${token}`);
       }
     }, 1200);
   }
 
   return (
     <div className="min-h-dvh bg-gray-50 flex flex-col">
-      <RsvpHeader title="Rsvp Confirmation" backHref={`/rsvp/${params.token}`} />
+      <RsvpHeader title="Rsvp Confirmation" backHref={`/rsvp/${token}`} />
 
       <main className="flex-1 max-w-md mx-auto w-full px-4 py-5 space-y-5 pb-24">
 
