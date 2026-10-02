@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { AdminLoginTemplate } from "@/components/templates/admin-login-template";
+import { AuthService } from "@/lib/api/auth-service";
 
 /**
  * LoginPage (Admin Command Center Login Controller)
- * Manages admin authentication state and delegates rendering to AdminLoginTemplate.
+ * Manages admin authentication state, interacts with AuthService, and delegates rendering to AdminLoginTemplate.
  */
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -13,15 +14,22 @@ export default function LoginPage() {
   const [rememberDevice, setRememberDevice] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate authentication
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await AuthService.loginAdmin({
+        email,
+        password,
+        remember: rememberDevice,
+      });
       window.location.href = "/admin/dashboard";
-    }, 1000);
+    } catch (err: any) {
+      console.error("[Login Error]", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

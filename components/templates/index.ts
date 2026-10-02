@@ -16,6 +16,8 @@ export * from "./admin-dashboard-template";
 export * from "./admin-guests-template";
 export * from "./admin-events-template";
 export * from "./admin-logistics-template";
+export * from "./admin-users-template";
+export * from "./admin-settings-template";
 
 // Auth & Login Templates
 export * from "./admin-login-template";

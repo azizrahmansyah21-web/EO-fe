@@ -1,12 +1,8 @@
-import axios from 'axios';
+import { apiClient } from "@/lib/api/client";
 
-const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://172.16.27.3:8000',
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  },
-});
-
-export default axiosInstance;
+/**
+ * Re-export standardized Axios instance from lib/api/client
+ * Ensures backward compatibility with existing imports while leveraging Sanctum interceptors.
+ */
+export const axiosInstance = apiClient;
+export default apiClient;

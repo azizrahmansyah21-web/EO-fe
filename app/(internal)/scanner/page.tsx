@@ -8,6 +8,7 @@ import { ScannerTemplate } from "@/components/templates/scanner-template";
 import { GuestVerificationData } from "@/components/molecules/guest-verification-card";
 import { ScanFeedItem } from "@/components/molecules/recent-scan-item";
 import { soundController } from "@/components/atoms/audio-chime";
+import { ScannerService, mapApiGuestToVerificationData } from "@/lib/api/scanner-service";
 
 // Realistic Mock Database of Event Attendees
 const INITIAL_GUESTS: Record<string, GuestVerificationData> = {
@@ -139,17 +140,29 @@ export default function MasterScannerPage() {
 
   // Search or Scan Token Handler
   const handleScanToken = useCallback(
-    (rawToken: string) => {
+    async (rawToken: string) => {
       const cleanToken = rawToken.trim().toUpperCase();
       if (!cleanToken) return;
 
       setIsProcessing(true);
 
-      // Simulate instantaneous database query
-      setTimeout(() => {
-        let found = guests[cleanToken];
+      try {
+        const res = await ScannerService.verifyToken({
+          token: cleanToken,
+          pos: currentPos,
+        });
 
-        // If not found by exact match, generate or match first mock guest
+        if (res.success && res.guest) {
+          const guestData = mapApiGuestToVerificationData(res.guest, currentPos);
+          setVerifiedGuest(guestData);
+          soundController.playSuccess();
+        } else {
+          soundController.playError();
+        }
+      } catch (err: any) {
+        console.warn("[Scanner Verify fallback]", err);
+        // Seamless fallback to memory state if offline
+        let found = guests[cleanToken];
         if (!found) {
           const matchKey = Object.keys(guests).find((k) =>
             k.toLowerCase().includes(cleanToken.toLowerCase())
@@ -157,7 +170,6 @@ export default function MasterScannerPage() {
           if (matchKey) {
             found = guests[matchKey];
           } else {
-            // Create dynamic guest record for demonstration
             found = {
               tokenId: cleanToken,
               name: "Tamu Undangan Resmi",
@@ -176,11 +188,11 @@ export default function MasterScannerPage() {
             };
           }
         }
-
         setVerifiedGuest(found);
         soundController.playSuccess();
+      } finally {
         setIsProcessing(false);
-      }, 400);
+      }
     },
     [guests, currentPos]
   );

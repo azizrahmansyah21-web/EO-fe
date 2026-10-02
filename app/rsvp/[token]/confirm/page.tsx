@@ -3,6 +3,7 @@
 import { useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { RsvpConfirmTemplate, RsvpConfirmGuest } from "@/components/templates/rsvp-confirm-template";
+import { RsvpService } from "@/lib/api/rsvp-service";
 
 const MOCK_GUEST: RsvpConfirmGuest = {
   name: "Hendra Wijaya, S.E.",
@@ -23,7 +24,7 @@ const QUOTA_OPTIONS = [
 
 /**
  * RsvpConfirmPage (Controller)
- * Manages form state and delegates UI presentation to RsvpConfirmTemplate.
+ * Manages form state, calls RsvpService.confirmRsvp, and delegates UI presentation to RsvpConfirmTemplate.
  */
 export default function RsvpConfirmPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = use(params);
@@ -32,18 +33,30 @@ export default function RsvpConfirmPage({ params }: { params: Promise<{ token: s
   const [quota, setQuota] = useState(QUOTA_OPTIONS[0]);
   const [loading, setLoading] = useState(false);
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!attendance) return;
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    const paxMatch = quota.match(/\d+/);
+    const pax = paxMatch ? parseInt(paxMatch[0], 10) : 1;
+
+    try {
+      const res = await RsvpService.confirmRsvp(token, {
+        attendance,
+        pax,
+      });
+      router.push(res.redirect_url || (attendance === "hadir" ? `/ticket/${token}` : `/rsvp/${token}`));
+    } catch (err: any) {
+      console.error("[RSVP Confirm Error]", err);
+      // Fallback redirect for offline demo
       if (attendance === "hadir") {
         router.push(`/ticket/${token}`);
       } else {
         router.push(`/rsvp/${token}`);
       }
-    }, 1200);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

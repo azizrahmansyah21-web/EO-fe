@@ -1,22 +1,29 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function CreateEventPage() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Simulasi: Menyimpan event baru...");
-    router.push("/admin/events/1");
+    setLoading(true);
+
+    // Simulate event creation API call
+    setTimeout(() => {
+      setLoading(false);
+      router.push("/admin/events");
+    }, 800);
   };
 
   return (
     <div className="max-w-3xl space-y-6">
       <div className="flex items-center gap-4">
-        <Link href="/admin/events" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <Link href="/admin/events" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </Link>
         <div>
@@ -63,8 +70,13 @@ export default function CreateEventPage() {
           <Link href="/admin/events" className="h-12 px-6 flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all">
             Batal
           </Link>
-          <button type="submit" className="h-12 px-6 bg-toyota-red text-white font-semibold rounded-lg hover:bg-toyota-dark-red transition-all">
-            Simpan Event
+          <button
+            type="submit"
+            disabled={loading}
+            className="h-12 px-6 bg-toyota-red text-white font-semibold rounded-lg hover:bg-toyota-dark-red transition-all flex items-center gap-2 disabled:opacity-50"
+          >
+            {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+            <span>{loading ? "Menyimpan..." : "Simpan Event"}</span>
           </button>
         </div>
       </form>

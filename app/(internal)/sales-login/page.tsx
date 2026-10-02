@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SalesLoginTemplate } from "@/components/templates/sales-login-template";
+import { AuthService } from "@/lib/api/auth-service";
 
 /**
  * SalesLoginPage (Sales Consultant Login Controller)
- * Manages sales credentials state and delegates UI presentation to SalesLoginTemplate.
+ * Manages sales credentials state, interacts with AuthService, and delegates UI presentation to SalesLoginTemplate.
  */
 export default function SalesLoginPage() {
   const router = useRouter();
@@ -15,15 +16,22 @@ export default function SalesLoginPage() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate sales authentication
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await AuthService.loginSales({
+        nik,
+        password,
+        remember: rememberMe,
+      });
       router.push("/sales");
-    }, 1000);
+    } catch (err: any) {
+      console.error("[Sales Login Error]", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isValid = nik.trim() !== "" && password.trim() !== "";
