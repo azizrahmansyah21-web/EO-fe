@@ -16,3 +16,7 @@ export * from "./admin-dashboard-template";
 export * from "./admin-guests-template";
 export * from "./admin-events-template";
 export * from "./admin-logistics-template";
+
+// Auth & Login Templates
+export * from "./admin-login-template";
+export * from "./sales-login-template";

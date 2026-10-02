@@ -94,7 +94,7 @@ export default function SalesLayout({ children }: { children: React.ReactNode })
                 <p className="text-[10px] text-gray-500">Cabang Sutomo</p>
               </div>
               <Link
-                href="/login"
+                href="/sales-login"
                 className="flex items-center gap-2 px-4 py-2 text-sm text-toyota-red hover:bg-red-50 font-medium transition-colors"
                 onClick={() => setIsProfileOpen(false)}
               >
