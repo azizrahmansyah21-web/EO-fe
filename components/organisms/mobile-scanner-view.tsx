@@ -32,14 +32,28 @@ export function MobileScannerView({
   const [isManualModalOpen, setIsManualModalOpen] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const scannerRef = useRef<Html5Qrcode | null>(null);
+  const cameraContainerRef = useRef<HTMLDivElement>(null);
+  const onScanTokenRef = useRef(onScanToken);
+  onScanTokenRef.current = onScanToken;
 
   useEffect(() => {
-    let html5QrCode: Html5Qrcode | null = null;
     let isMounted = true;
+    let html5QrCode: Html5Qrcode | null = null;
+    const container = cameraContainerRef.current;
+    if (!container) return;
+
+    // Create an isolated child element specifically for html5-qrcode so React's VDOM
+    // never manages or reconciles the dynamically injected video/canvas nodes.
+    const scannerElementId = `html5qr-reader-${Math.random().toString(36).substring(2, 9)}`;
+    const scannerDiv = document.createElement("div");
+    scannerDiv.id = scannerElementId;
+    scannerDiv.style.width = "100%";
+    scannerDiv.style.height = "100%";
+    container.appendChild(scannerDiv);
 
     async function initCamera() {
       try {
-        html5QrCode = new Html5Qrcode("mobile-camera-reader");
+        html5QrCode = new Html5Qrcode(scannerElementId);
         scannerRef.current = html5QrCode;
 
         const config = {
@@ -53,8 +67,8 @@ export function MobileScannerView({
           config,
           (decodedText: string) => {
             if (isMounted) {
-              onScanToken(decodedText);
-              // Pause scanning briefly
+              onScanTokenRef.current(decodedText);
+              // Pause scanning safely
               try {
                 html5QrCode?.pause();
               } catch {
@@ -64,11 +78,46 @@ export function MobileScannerView({
           },
           () => {} // ignore non-QR frames
         );
+
+        if (!isMounted) {
+          // If unmounted during async start
+          safeTeardown(html5QrCode, scannerDiv);
+        }
       } catch (err: unknown) {
         if (isMounted) {
           console.warn("Camera start warning:", err);
           setCameraError("Kamera tidak aktif atau izin akses ditolak. Gunakan tombol Input Manual di bawah.");
         }
+        try {
+          scannerDiv.remove();
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    function safeTeardown(scanner: Html5Qrcode | null, el: HTMLElement) {
+      if (!scanner) {
+        try { el.remove(); } catch {}
+        return;
+      }
+      try {
+        if (scanner.isScanning) {
+          scanner
+            .stop()
+            .then(() => {
+              try { scanner.clear(); } catch {}
+              try { el.remove(); } catch {}
+            })
+            .catch(() => {
+              try { el.remove(); } catch {}
+            });
+        } else {
+          try { scanner.clear(); } catch {}
+          try { el.remove(); } catch {}
+        }
+      } catch {
+        try { el.remove(); } catch {}
       }
     }
 
@@ -76,17 +125,10 @@ export function MobileScannerView({
 
     return () => {
       isMounted = false;
-      if (html5QrCode) {
-        try {
-          if (html5QrCode.isScanning) {
-            html5QrCode.stop().catch(console.error);
-          }
-        } catch {
-          // ignore
-        }
-      }
+      scannerRef.current = null;
+      safeTeardown(html5QrCode, scannerDiv);
     };
-  }, [onScanToken]);
+  }, []);
 
   function handleScanAgain() {
     try {
@@ -100,7 +142,8 @@ export function MobileScannerView({
     <div className="flex-1 flex flex-col bg-gray-900 min-h-0 relative pb-16">
       {/* Top Camera Stream Viewport */}
       <div className="relative w-full h-[40vh] min-h-[260px] max-h-[380px] bg-black overflow-hidden shrink-0">
-        <div id="mobile-camera-reader" className="w-full h-full object-cover"></div>
+        {/* Isolated DOM container for html5-qrcode */}
+        <div ref={cameraContainerRef} className="w-full h-full object-cover relative bg-black"></div>
 
         {/* Viewfinder Reticle Overlay */}
         <ScannerViewfinder isScanning={!verifiedGuest} />
